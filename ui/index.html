@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css" />
+    <script src="./js/main.js"></script>
+</head>
+
+<body>
+    <div class="box focus">
+        <h1>Tauri-Mopidy</h1>
+
+        <p>This is an app to control mopidy through tauri.
+            Enter the information to connect to your server below.
+            You can connect to any number of servers at the same time.
+            You can also connect to the same instance of a server (multiple extensions).</p>
+    </div>
+
+    <div style="display: flex;flex-direction: column;gap: 1rem;">
+        <div>
+            <select id="protocol" onchange="updateProtocol(this.value)">
+                <option value="http://">http</option>
+                <option value="https://">https</option>
+            </select>
+            <label for="protocol">The protocol to communicate with.</label>
+        </div>
+
+        <div>
+            <input type="text" id="address" onchange="updateIP(this.value)"
+            placeholder="localhost">
+            <label for="address">The IP address to connect to.</label>
+        </div>
+
+        <div>
+            <input type="number" id="port" onchange="updatePort(this.value)"
+            placeholder="6680">
+            <label for="port">The port Mopidy is running on.</label>
+        </div>
+
+        <div>
+            <input type="text" id="name" onchange="updateName(this.value)"
+            placeholder="Iris Client">
+            <label for="name">The name of the window. Cannot be 2 of the same name.</label>
+        </div>
+
+        <div>
+            <input type="text" id="extension" onchange="updateExtension(this.value)"
+            placeholder="/iris">
+            <label for="extension">The extension to connect to (optional).</label>
+        </div>
+        <p id="status"></p>
+
+        <button onclick="loadMopidy()">Connect</button>
+    </div>
+</body>
+
+</html>
