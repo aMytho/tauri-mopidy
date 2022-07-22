@@ -30,7 +30,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.Tauri-Mopidy.Mytho",
       "longDescription": "An app to access Mopidy from the desktop",
       "macOS": {
         "entitlements": null,
