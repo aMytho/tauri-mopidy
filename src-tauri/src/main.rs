@@ -4,12 +4,12 @@
 )]
 
 use std::collections::HashMap;
-
 use tauri::{Manager};
 use tauri::{SystemTray, SystemTrayEvent};
 
 mod tray;
 mod title_bar;
+mod server_connection;
 
 fn main() {
     // Store the tray menu state
@@ -42,7 +42,8 @@ fn main() {
             }
           })
         .menu(title_bar::generate_title_menu())
-        .invoke_handler(tauri::generate_handler![add_menu_entry])
+        .invoke_handler(tauri::generate_handler![add_menu_entry, add_connection,
+            request_connections, delete_connection])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -53,4 +54,28 @@ fn main() {
 fn add_menu_entry(app: tauri::AppHandle, name: String) {
     println!("Attempting to create {}", name);
     app.tray_handle().set_menu(tray::regenerate_menu(app.windows())).unwrap();
+}
+
+#[tauri::command]
+fn add_connection(protocol: server_connection::Protocol, address: String, port: String, extension: String, name: String) {
+    println!("{}, {:?}, {}, {}", address, protocol, extension, name);
+
+    let conn = server_connection::ServerConnection {
+        protocol,
+        address,
+        port,
+        extension,
+        name
+    };
+    server_connection::add_connection(conn);
+}
+
+#[tauri::command]
+fn request_connections() -> Vec<server_connection::ServerConnection> {
+    return server_connection::get_connections();
+}
+
+#[tauri::command]
+fn delete_connection(name: String) {
+    server_connection::delete_connection(name);
 }
