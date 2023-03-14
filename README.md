@@ -6,7 +6,9 @@ A desktop app to access mopidy extensions.
 
 Tauri-Mopidy is a way to listen to and control your mopidy service. It **does not** host any of the extensions itself. Instead, it connects to your mopidy server and displays it in a webview using Tauri. It will be useless without a mopidy server to connect to.
 
-This method is more lightweight than a full browser. It also allows you to connect to multiple extensions in separate webviews.
+## Why?
+
+Every browser uses `x` amount of ram and adds `y` ram as tabs are created. A webview window is smaller than a full browser and uses less resources. If I didn't have a browser open, it would be better to use this program instead of a full browser.
 
 ## Installation and Usage
 
