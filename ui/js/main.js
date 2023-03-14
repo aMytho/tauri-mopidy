@@ -1,46 +1,30 @@
-// Connection information
-let protocol = "http://"
-let IP = "localhost";
-let port = ":6680";
-let extension = "";
-let windowName = "Mopidy";
 // Array of all active window names
 let names = [];
 
-function loadMopidy() {
-    if (checkWindowName(windowName) == false) {
+function loadMopidy(data) {
+    if (checkWindowName(data.name) == false) {
         console.log("Name already in use");
         document.getElementById("status").innerText = "That name is already in use";
         return;
     }
-    let newWindow = new __TAURI__.window.WebviewWindow(windowName, {url: protocol + IP + port + extension});
-    console.log(newWindow)
+    console.log(`${data.protocol}${data.address}:${data.port}${extension}`)
+    let newWindow = new __TAURI__.window.WebviewWindow(data.name, {url: `${data.protocol}${data.address}:${data.port}${data.extension}`});
+    console.log(newWindow);
     newWindow.once('tauri://created', function() {
-        __TAURI__.invoke("add_menu_entry", {name: windowName});
-        names.push(windowName);
+        __TAURI__.invoke("add_menu_entry", {name: data.name});
+        names.push(data.name);
         document.getElementById("status").innerText = "";
     })
 }
 
-function updatePort(newPort) {
-    port = ":" + newPort
+function makeURLSafe(data) {
+    data.protocol = data.protocol.toLowerCase() + "://";
+    if (!data.extension.startsWith("/")) {
+        data.extension = "/" + data.extension;
+    };
+    return data;
 }
 
-function updateIP(newIP) {
-    IP = newIP
-}
-
-function updateName(newName) {
-    windowName = newName;
-}
-
-function updateProtocol(newProtocol) {
-    protocol = newProtocol;
-}
-
-function updateExtension(newExtension) {
-    extension = newExtension;
-}
 
 function checkWindowName(name) {
     if (name == "main") return false;
@@ -68,3 +52,58 @@ __TAURI__.event.listen("closed", function(window) {
         return name != window.windowLabel;
     })
 })
+
+document.addEventListener("DOMContentLoaded", (ev) => {
+    __TAURI__.invoke("request_connections").then(data =>{
+        console.log(data);
+        data.forEach(connection => {
+            addConnection(connection);
+        });
+    });
+});
+
+function addConnection(data) {
+    data = makeURLSafe(data);
+    let connection = document.createElement("div");
+    connection.classList.add("connection");
+
+    let header = document.createElement("h3");
+    header.innerText = data.name;
+    connection.appendChild(header);
+
+    let path = document.createElement("p");
+    path.innerText = `${data.protocol}${data.address}:${data.port}${data.extension}`;
+    connection.appendChild(path);
+
+    let deleteIcon = document.createElement("p");
+    deleteIcon.innerText = "🗑";
+    deleteIcon.classList.add("deleteIcon");
+    deleteIcon.title = "Delete";
+    connection.appendChild(deleteIcon);
+
+    connection.addEventListener("click", (ev) => {
+        loadMopidy(data);
+    });
+
+    deleteIcon.addEventListener("click", (ev) => {
+        ev.stopImmediatePropagation();
+        console.log("Deleting an entry");
+        __TAURI__.invoke("delete_connection", {name: data.name});
+        connection.remove();
+    })
+
+    document.getElementById("connectionContainer").appendChild(connection);
+}
+
+function createConnection() {
+    let protocol = document.getElementById("protocol").value;
+    let address = document.getElementById("address").value;
+    let port = document.getElementById("port").value;
+    let extension = document.getElementById("extension").value;
+    let name = document.getElementById("name").value;
+    let props = {protocol: protocol, address: address, port: port, extension: extension, name: name};
+    
+    //Add to config and show in window
+    __TAURI__.invoke("add_connection", props);
+    addConnection(props);
+}

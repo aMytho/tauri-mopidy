@@ -41,3 +41,42 @@ img {
 .box.focus a {
     color: #e8ecef;
 }
+
+#connectionContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.connection {
+    position: relative;
+    border: solid 2px burlywood;
+    padding: 1rem;
+    margin: 0.5rem;
+    width: min-content;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.connection:hover {
+    background-color: lightgoldenrodyellow;
+}
+
+#addConnection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.deleteIcon {
+    position: absolute;
+    z-index: 2;
+    margin-top: 0;
+    margin-bottom: 0;
+    top: 0.1rem;
+    right: 0.3rem;
+    color: red;
+    font-size: 1.5rem;
+}
