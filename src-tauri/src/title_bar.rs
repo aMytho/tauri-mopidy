@@ -1,4 +1,4 @@
-use tauri::{Menu};
+use tauri::Menu;
 
 pub fn generate_title_menu() -> Menu {
     return Menu::new();

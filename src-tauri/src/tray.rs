@@ -3,9 +3,9 @@ use std::{collections::HashMap};
 use tauri::{CustomMenuItem, SystemTrayMenu, SystemTrayMenuItem, Window, AppHandle, Manager, SystemTraySubmenu};
 
 fn generate_submenu(name: &String) -> SystemTraySubmenu {
-    let hide = CustomMenuItem::new(name.clone() + "hide", "Hide");
-    let show = CustomMenuItem::new(name.clone() + "show", "Show");
-    let close = CustomMenuItem::new(name.clone() + "clos", "Close");
+    let hide = CustomMenuItem::new(format!("{}hide", name), "Hide");
+    let show = CustomMenuItem::new(format!("{}show", name), "Show");
+    let close = CustomMenuItem::new(format!("{}clos", name), "Close");
     let menu = SystemTrayMenu::new()
         .add_item(close)
         .add_item(hide)
@@ -23,9 +23,9 @@ pub fn regenerate_menu(windows: HashMap<String, Window>) -> SystemTrayMenu {
             println!("Generating {}", val.label());
         }
     }
-    let quit = CustomMenuItem::new("mainquit".to_string(), "Quit");
-    let hide = CustomMenuItem::new("mainhide".to_string(), "Hide");
-    let home = CustomMenuItem::new("mainhome".to_string(), "Server Select");
+    let quit = CustomMenuItem::new("mainquit", "Quit");
+    let hide = CustomMenuItem::new("mainhide", "Hide");
+    let home = CustomMenuItem::new("mainhome", "Server Select");
     menu = menu
         .add_item(home)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -44,8 +44,7 @@ pub fn handle_tray_click(id:String, window: Window, app: &AppHandle) {
         "quit" => window.close().unwrap(),
         "home" => {
             println!("Building new window");
-            let maybe_window = app.get_window("main");
-            match maybe_window {
+            match app.get_window("main") {
                 Some(window) => {
                     if !window.is_visible().unwrap() {
                         window.show().unwrap();

@@ -4,8 +4,7 @@
 )]
 
 use std::collections::HashMap;
-use tauri::{Manager};
-use tauri::{SystemTray, SystemTrayEvent};
+use tauri::{SystemTray, SystemTrayEvent, Manager};
 
 mod tray;
 mod title_bar;
