@@ -8,8 +8,8 @@ Tauri-Mopidy is a way to listen to and control your mopidy service. It **does no
 
 ## Why?
 
-Every browser uses `x` amount of ram and adds `y` ram as tabs are created. A webview window is smaller than a full browser and uses less resources. If I didn't have a browser open, it would be better to use this program instead of a full browser.
+Every browser uses `x` amount of ram and adds `y` ram as tabs are created. A webview window is smaller than a full browser and uses less resources. If I didn't have a browser open, it would be better to use this program instead of a full browser. This app is also a convienent way to quickly access multiple servers or endpoints from one menu. 
 
 ## Installation and Usage
 
-Download and run the installer for your platform. Once complete enter your server information. The URL and port are required. The name is the unique name of the window. The extension input allows you to navigate to a specific extension by URL path. Ex. /iris for the Iris extension.
+Download and run the installer for your platform. Once complete enter your server information. The URL and port are required. The name is the unique name of the window. The extension input allows you to navigate to a specific extension by URL path. Ex. iris for the Iris extension.
