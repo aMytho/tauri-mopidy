@@ -91,7 +91,7 @@ pub fn delete_connection(name: String) {
 
 fn get_path() -> String {
     #[cfg(unix)]
-    let app_data: String = std::env::var("HOME").expect("No HOME directory");
+    let mut app_data: String = std::env::var("HOME").expect("No HOME directory");
     #[cfg(windows)]
     let mut app_data: String = std::env::var("APPDATA").expect("No APP_DATA directory");
 
